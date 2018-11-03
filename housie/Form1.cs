@@ -1,4 +1,6 @@
-﻿using System;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -6,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +21,6 @@ namespace housie
         
         public static SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["housieConnectionString"].ConnectionString);
         public static SqlDataAdapter adapter;
-        DataTable dt = null;
 
         public Form1()
         {
@@ -116,63 +118,12 @@ namespace housie
                     
                     reset_data();
                     con.Close();
-                    DisplayData();
+                    search_and_display();
                 }
                 catch (Exception es)
                 {
                     MessageBox.Show(es.Message);
                 }
-            }
-        }
-        
-
-        //Display Data in DataGridView  
-        public static void DisplayData()
-        {
-            if (con.State == ConnectionState.Closed)
-            {
-                con.Open();
-            }
-            DataTable dataTable = new DataTable();
-            String qry = "select * from Ticket_Collection";
-            //checking all radio buttons
-            if (paid.Checked == true)
-            {
-                qry += " WHERE payment_status = 1";
-            }
-            else if (unpaid.Checked == true)
-            {
-                qry += " WHERE payment_status = 0";
-            }
-            qry += " order by seller_name,ticket_holder_name";
-            adapter = new SqlDataAdapter(qry, con);
-            adapter.Fill(dataTable);
-            housieDataGridView.DataSource = dataTable;
-            no_of_record.Text = (housieDataGridView.RowCount).ToString();
-            if (con.State == ConnectionState.Open)
-            {
-                con.Close();
-            }
-        }
-
-        public static void RefreshData() {
-            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["housieConnectionString"].ConnectionString);
-            if (conn.State == ConnectionState.Closed)
-            {
-                conn.Open();
-            }
-            
-            if (search_text.Text.ToString().Trim() != "" && search_text.Text.ToString().Trim() != "Enter something to search for")
-            {
-                search_and_display();
-            }
-            else
-            {
-                DisplayData();
-            }
-            if (conn.State == ConnectionState.Open)
-            {
-                conn.Close();
             }
         }
 
@@ -248,7 +199,7 @@ namespace housie
             housieDataGridView.Columns.Add(btn);
             btn.UseColumnTextForButtonValue = true;
             housieDataGridView.Columns[0].Visible = false;
-            DisplayData();
+            search_and_display();
 
         }
 
@@ -271,48 +222,56 @@ namespace housie
             bool result = int.TryParse(str_num, out i);
             return result;
         }
-        /*
-        private void search_button_Click(object sender, EventArgs e)
-        {
-            search_and_display();
-        }
-        */
+        
         public  static void search_and_display() {
             String search = search_text.Text.Trim();
-            if (search == "" || search_text.Text.ToString().Trim() == "Enter something to search for") { return; }
+            
             if (con.State == ConnectionState.Closed)
             {
                 con.Open();
             }
             String qry = "select * from Ticket_Collection";
-            if (isNum(search))
+
+            if (search != "" && search_text.Text.ToString().Trim() != "Enter something to search for")
             {
-                qry += " where (bumper_no=" + search + " or mini_bumper_no=" + search+") ";
-                //checking all radio buttons
+                if (isNum(search))
+                {
+                    qry += " where (bumper_no=" + search + " or mini_bumper_no=" + search + ") ";
+                    //checking all radio buttons
+                    if (paid.Checked == true)
+                    {
+                        qry += " AND payment_status = 1";
+                    }
+                    else if (unpaid.Checked == true)
+                    {
+                        qry += " AND payment_status = 0";
+                    }
+                }
+                else
+                {
+                    qry += " where (UPPER(ticket_holder_name) like UPPER('%" + search + "%') or " +
+                        " UPPER(address) like UPPER('%" + search + "%') or UPPER(seller_name) like UPPER('%" + search + "%'))";
+                    //checking all radio buttons
+                    if (paid.Checked == true)
+                    {
+                        qry += " AND payment_status = 1";
+                    }
+                    else if (unpaid.Checked == true)
+                    {
+                        qry += " AND payment_status = 0";
+                    }
+                }
+            }
+            else {
                 if (paid.Checked == true)
                 {
-                    qry += " AND payment_status = 1";
+                    qry += " WHERE payment_status = 1";
                 }
                 else if (unpaid.Checked == true)
                 {
-                    qry += " AND payment_status = 0";
+                    qry += " WHERE payment_status = 0";
                 }
             }
-            else
-            {
-                qry += " where (UPPER(ticket_holder_name) like UPPER('%" + search + "%') or " +
-                    " UPPER(address) like UPPER('%" + search + "%') or UPPER(seller_name) like UPPER('%" + search + "%'))";
-                //checking all radio buttons
-                if (paid.Checked == true)
-                {
-                    qry += " AND payment_status = 1";
-                }
-                else if (unpaid.Checked == true)
-                {
-                    qry += " AND payment_status = 0";
-                }
-            }
-            
             qry += " order by seller_name,ticket_holder_name";
 
             //MessageBox.Show(qry);
@@ -320,6 +279,9 @@ namespace housie
             adapter = new SqlDataAdapter(qry, con);
             adapter.Fill(dt);
             housieDataGridView.DataSource = dt;
+            housieDataGridView.Columns[6].DefaultCellStyle.Format = "dd/MM/yyyy";
+            btnExportPdf.Enabled = (housieDataGridView.RowCount > 0);
+            
             no_of_record.Text = (housieDataGridView.RowCount).ToString();
             //label_response.Text = qry;
             if (con.State == ConnectionState.Open)
@@ -330,14 +292,7 @@ namespace housie
 
         private void RefreshAll_Click(object sender, EventArgs e)
         {
-            if (search_text.Text.ToString().Trim() != "" && search_text.Text.ToString().Trim()!= "Enter something to search for")
-            {
-                search_and_display();
-            }
-            else
-            {
-                DisplayData();
-            }
+            search_and_display();
         }
         
         private void housieDataGridView_RowHeaderCellChanged(object sender, DataGridViewRowEventArgs e)
@@ -392,17 +347,120 @@ namespace housie
 
         private void all_CheckedChanged(object sender, EventArgs e)
         {
-            RefreshData();
+            search_and_display();
         }
 
         private void paid_CheckedChanged(object sender, EventArgs e)
         {
-            RefreshData();
+            search_and_display();
         }
 
         private void unpaid_CheckedChanged(object sender, EventArgs e)
         {
-            RefreshData();
+            search_and_display();
         }
+
+
+        private void btnExportPdf_Click(object sender, EventArgs e)
+        {
+            //Creating iTextSharp Table from the DataTable data
+            PdfPTable pdfTable = new PdfPTable(housieDataGridView.ColumnCount-2);
+            pdfTable.DefaultCell.Padding = 3;
+            pdfTable.WidthPercentage = 100;
+            pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+            pdfTable.DefaultCell.BorderWidth = 1;
+            float[] widths = new float[] { 50,60,25,25,20,25,50 };
+            pdfTable.SetWidths(widths);
+            //Adding Header row
+            foreach (DataGridViewColumn column in housieDataGridView.Columns)
+            {
+                if(column.HeaderText.Trim()!="" && column.HeaderText != "Id")
+                {
+                    PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
+                    cell.BackgroundColor = new iTextSharp.text.Color(240, 240, 240);
+                    pdfTable.AddCell(cell);
+                }
+                
+            }
+
+            //Adding DataRow
+            foreach (DataGridViewRow row in housieDataGridView.Rows)
+            {
+                int i = 0;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if(i!=0 && i != row.Cells.Count - 1)
+                    {
+                        if (i == 5)
+                        {
+                            if (cell.Value.ToString() == "True")
+                            {
+                                pdfTable.AddCell("Paid");
+                            }
+                            else
+                            {
+                                pdfTable.AddCell("Not Paid");
+                            }
+                        }
+                        else if (i == 6) {
+                            String dateTime = cell.Value.ToString().Trim();
+                            if (dateTime != "")
+                            {
+                                String[] dateTimeArray = dateTime.Split(new Char[] { ' ' });
+                                String[] dateArray = dateTimeArray[0].Split(new Char[] { '/' });
+                                pdfTable.AddCell((dateArray[1] + "/" + dateArray[0] + "/" + dateArray[2]).Trim());
+                            }
+                            else {
+                                pdfTable.AddCell("");
+                            }
+                            
+                        }
+                        else
+                        {
+                            pdfTable.AddCell(cell.Value.ToString());
+                        }
+                        
+                    }
+                    i++;
+                }
+            }
+
+            //Opening Save Dialog to get the path where the exported report will be stored
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "PDF Document|*.pdf";
+            saveFileDialog1.Title = "Export a report in PDF";
+            saveFileDialog1.ShowDialog();
+            //Exporting to PDF
+
+            if (saveFileDialog1.FileName != "")
+            {
+                
+                using (FileStream stream = new FileStream(saveFileDialog1.FileName, FileMode.Create))
+                {
+                    Document pdfDoc = new Document(PageSize.A4.Rotate(), 20f, 20f, 20f, 20f);
+                    PdfWriter.GetInstance(pdfDoc, stream);
+                    pdfDoc.Open();
+                    Paragraph paragraph = new Paragraph();
+                    paragraph.SpacingBefore = 10;
+                    paragraph.SpacingAfter = 10;
+                    paragraph.Alignment = Element.ALIGN_CENTER;
+                    paragraph.Font = FontFactory.GetFont(FontFactory.HELVETICA, 12f, BaseColor.DARK_GRAY);
+                    paragraph.Add("HOUSIE TICKET SALE RECORD");
+                    pdfDoc.Add(paragraph);
+
+                    Paragraph record = new Paragraph();
+                    record.Alignment = Element.ALIGN_CENTER;
+                    record.Add(pdfTable);
+                    pdfDoc.Add(record);
+                    pdfDoc.Close();
+                    stream.Close();
+                    MessageBox.Show("Export completed.");
+                }
+                System.Diagnostics.Process.Start(saveFileDialog1.FileName);
+            }
+        }
+
+
+
     }
 }

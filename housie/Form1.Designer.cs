@@ -77,6 +77,8 @@
             this.ticketCollectionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.ticket_CollectionTableAdapter = new housie.housieDataSetTableAdapters.Ticket_CollectionTableAdapter();
             this.ticketCollectionBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.tableAdapterManager1 = new housie.housieDataSetTableAdapters.TableAdapterManager();
+            btnExportPdf = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.Menutab.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -537,12 +539,29 @@
             this.ticketCollectionBindingSource2.DataMember = "Ticket_Collection";
             this.ticketCollectionBindingSource2.DataSource = this.housieDataSet;
             // 
+            // tableAdapterManager1
+            // 
+            this.tableAdapterManager1.BackupDataSetBeforeUpdate = false;
+            this.tableAdapterManager1.Ticket_CollectionTableAdapter = this.ticket_CollectionTableAdapter;
+            this.tableAdapterManager1.UpdateOrder = housie.housieDataSetTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
+            // 
+            // btnExportPdf
+            // 
+            btnExportPdf.Location = new System.Drawing.Point(935, 539);
+            btnExportPdf.Name = "btnExportPdf";
+            btnExportPdf.Size = new System.Drawing.Size(127, 22);
+            btnExportPdf.TabIndex = 6;
+            btnExportPdf.Text = "Export PDF";
+            btnExportPdf.UseVisualStyleBackColor = true;
+            btnExportPdf.Click += new System.EventHandler(btnExportPdf_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1090, 557);
+            this.ClientSize = new System.Drawing.Size(1090, 571);
+            this.Controls.Add(btnExportPdf);
             this.Controls.Add(this.Menutab);
             this.Controls.Add(this.panel2);
             this.Name = "Form1";
@@ -610,12 +629,14 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn paymentstatusDataGridViewCheckBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn paymentdateDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn sellernameDataGridViewTextBoxColumn1;
+        private housieDataSetTableAdapters.TableAdapterManager tableAdapterManager1;
         public static System.Windows.Forms.TextBox search_text;
         public static System.Windows.Forms.RadioButton unpaid;
         public static System.Windows.Forms.RadioButton paid;
         public static System.Windows.Forms.RadioButton all;
         public static System.Windows.Forms.Label no_of_record;
         public static System.Windows.Forms.DataGridView housieDataGridView;
+        public static System.Windows.Forms.Button btnExportPdf;
     }
 }
 

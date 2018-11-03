@@ -108,7 +108,7 @@ namespace housie
             {
                 MessageBox.Show(excpt.GetBaseException().ToString());
             }
-            Form1.RefreshData();
+            Form1.search_and_display();
             con.Close();
             this.Close();
         }
