@@ -278,7 +278,8 @@ namespace housie {
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class Ticket_CollectionDataTable : global::System.Data.TypedTableBase<Ticket_CollectionRow> {
-            
+            private global::System.Data.DataColumn Id;
+
             private global::System.Data.DataColumn columnticket_holder_name;
             
             private global::System.Data.DataColumn columnaddress;
@@ -325,7 +326,17 @@ namespace housie {
                     base(info, context) {
                 this.InitVars();
             }
-            
+
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IdColumn
+            {
+                get
+                {
+                    return this.Id;
+                }
+            }
+
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn ticket_holder_nameColumn {
@@ -451,6 +462,7 @@ namespace housie {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
+                this.Id = base.Columns["Id"];
                 this.columnticket_holder_name = base.Columns["ticket_holder_name"];
                 this.columnaddress = base.Columns["address"];
                 this.columnbumper_no = base.Columns["bumper_no"];
@@ -463,6 +475,8 @@ namespace housie {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
+                this.Id = new global::System.Data.DataColumn("Id", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.Id);
                 this.columnticket_holder_name = new global::System.Data.DataColumn("ticket_holder_name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnticket_holder_name);
                 this.columnaddress = new global::System.Data.DataColumn("address", typeof(string), null, global::System.Data.MappingType.Element);
@@ -960,6 +974,7 @@ namespace housie.housieDataSetTableAdapters {
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
             tableMapping.DataSetTable = "Ticket_Collection";
+            tableMapping.ColumnMappings.Add("Id", "Id");
             tableMapping.ColumnMappings.Add("ticket_holder_name", "ticket_holder_name");
             tableMapping.ColumnMappings.Add("address", "address");
             tableMapping.ColumnMappings.Add("bumper_no", "bumper_no");
@@ -994,12 +1009,12 @@ namespace housie.housieDataSetTableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT ticket_holder_name, address, bumper_no, mini_bumper_no, payment_status, pa" +
+            this._commandCollection[0].CommandText = "SELECT Id,ticket_holder_name, address, bumper_no, mini_bumper_no, payment_status, pa" +
                 "yment_date, seller_name FROM dbo.Ticket_Collection";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
             this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "SELECT ticket_holder_name, address, bumper_no, mini_bumper_no, payment_status, pa" +
+            this._commandCollection[1].CommandText = "SELECT Id,ticket_holder_name, address, bumper_no, mini_bumper_no, payment_status, pa" +
                 "yment_date, seller_name FROM dbo.Ticket_Collection";
             this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
         }
