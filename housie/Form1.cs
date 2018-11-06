@@ -675,6 +675,35 @@ namespace housie
                     }
                     else if (cell.Value.ToString() == "Delete") {
                         id = expenditre_dataGridView.Rows[rowIndex].Cells[0].Value.ToString();
+                        DialogResult conf = MessageBox.Show("Are you sure to delete?",
+                        "Warning",
+                        MessageBoxButtons.YesNo);
+
+                        if (conf == DialogResult.Yes) {
+                            if (con.State == ConnectionState.Closed)
+                            {
+                                con.Open();
+                            }
+                            //delete task
+                            String qry = "DELETE FROM EXPENDITURE WHERE Id = @Id";
+                            SqlCommand cmd = new SqlCommand(qry, con);
+                            cmd.Parameters.AddWithValue("@Id", id);
+                            try
+                            {
+                                cmd.ExecuteNonQuery();
+                                refresh_ExpenditureGrid();
+                            }
+                            catch (Exception exception)
+                            {
+                                MessageBox.Show("Error in deleting. " + exception.GetBaseException().ToString(), "Delete Error");
+                            }
+
+                            if (con.State == ConnectionState.Open)
+                            {
+                                con.Close();
+                            }
+                        }
+                        /* Otherwise do nothing */
                     }
                     
                 }
