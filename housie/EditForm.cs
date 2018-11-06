@@ -102,7 +102,7 @@ namespace housie
             try
             {
                 cmd.ExecuteNonQuery();
-                MessageBox.Show("Record Updated Successfully");
+                MessageBox.Show("Record Updated Successfully","Save result");
             }
             catch(Exception excpt)
             {

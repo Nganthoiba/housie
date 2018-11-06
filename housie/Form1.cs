@@ -33,7 +33,26 @@ namespace housie
             date_of_payment.Visible = false;
             payment_no.Checked = true;
         }
+        public string generateRandomString(int length)
+        {
+            string alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string small_alphabets = "abcdefghijklmnopqrstuvwxyz";
+            string numbers = "1234567890";
+            string characters = numbers + alphabets + small_alphabets + numbers;
+            string otp = string.Empty;
 
+            for (int i = 0; i < length; i++)
+            {
+                string character = string.Empty;
+                do
+                {
+                    int index = new Random().Next(0, characters.Length);
+                    character = characters.ToCharArray()[index].ToString();
+                } while (otp.IndexOf(character) != -1);
+                otp += character;
+            }
+            return otp;
+        }
         private void Search_text_LostFocus(object sender, EventArgs e)
         {
             if (search_text.Text.Trim() == "") {
@@ -190,16 +209,75 @@ namespace housie
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'donationDataSet.donation' table. You can move, or remove it, as needed.
+            this.donationTableAdapter.Fill(this.donationDataSet.donation);
+            // TODO: This line of code loads data into the 'expDataSet.expenditure' table. You can move, or remove it, as needed.
+            this.expenditureTableAdapter1.Fill(this.expDataSet.expenditure);
+            // TODO: This line of code loads data into the 'expenditureDataSet.expenditure' table. You can move, or remove it, as needed.
+            this.expenditureTableAdapter.Fill(this.expenditureDataSet.expenditure);
             // TODO: This line of code loads data into the 'housieDataSet.Ticket_Collection' table. You can move, or remove it, as needed.
             this.ticket_CollectionTableAdapter.Fill(this.housieDataSet.Ticket_Collection);
+            /* Edit Button */
+            DataGridViewButtonColumn editBtn = new DataGridViewButtonColumn();
+            editBtn.HeaderText = "";
+            editBtn.Text = "Edit";
+            editBtn.UseColumnTextForButtonValue = true;
             
-            DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
-            btn.HeaderText = "";
-            btn.Text = "Edit";
-            housieDataGridView.Columns.Add(btn);
-            btn.UseColumnTextForButtonValue = true;
+
+            housieDataGridView.Columns.Add(editBtn); 
             housieDataGridView.Columns[0].Visible = false;
+            //housieDataGridView.Width = tabPage2.Width;
             search_and_display();
+
+            /******************************************** DONATION ******************************************/
+            /* Action Buttons for Donation GridView */
+            /* Edit Donation */
+            DataGridViewButtonColumn editDonation = new DataGridViewButtonColumn();
+            editDonation.HeaderText = "";
+            editDonation.Text = "Edit";
+            editDonation.UseColumnTextForButtonValue = true;
+            donorGridView.Columns.Add(editDonation);
+            /* Delete Donation */
+            DataGridViewButtonColumn deleteDonation = new DataGridViewButtonColumn();
+            deleteDonation.HeaderText = "";
+            deleteDonation.Text = "Delete";
+            deleteDonation.UseColumnTextForButtonValue = true;
+            donorGridView.Columns.Add(deleteDonation);
+            /***********************************************************************************************/
+
+
+
+            /****************************************** EXPENDITURE ****************************************/
+
+            action_code.Text = "new_entry";
+            action_code.Visible = false;
+            exp_id.Text = "";
+            exp_id.Visible = false;
+            expenditre_dataGridView.Columns[0].Visible = false;
+            expenditre_dataGridView.Columns[1].Width += 40;
+            expenditre_dataGridView.Columns[2].DefaultCellStyle.Format = "dd/MM/yyyy";
+            expenditre_dataGridView.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            
+            /* Action Buttons for Expenditure GridView */
+
+            /* Edit Expenditure */
+            DataGridViewButtonColumn editExpenditure = new DataGridViewButtonColumn();
+            editExpenditure.HeaderText = "";
+            editExpenditure.Text = "Edit";
+            editExpenditure.UseColumnTextForButtonValue = true;
+            expenditre_dataGridView.Columns.Add(editExpenditure);
+            expenditre_dataGridView.Columns[4].Width = 60;
+            
+            /* Delete Expenditure */
+            DataGridViewButtonColumn deleteExpenditure = new DataGridViewButtonColumn();
+            deleteExpenditure.HeaderText = "";
+            deleteExpenditure.Text = "Delete";
+            deleteExpenditure.UseColumnTextForButtonValue = true;
+            expenditre_dataGridView.Columns.Add(deleteExpenditure);
+            expenditre_dataGridView.Columns[5].Width = 60;
+
+            refresh_ExpenditureGrid();
+            /**********************************************************************************************/
 
         }
 
@@ -219,9 +297,12 @@ namespace housie
         
         public static Boolean isNum(String str_num) {
             int i = 0;
-            bool result = int.TryParse(str_num, out i);
-            return result;
+            decimal d = 0;
+            bool isInt = int.TryParse(str_num, out i);
+            bool isdecimal = decimal.TryParse(str_num, out d);
+            return (isInt || isdecimal);
         }
+
         
         public  static void search_and_display() {
             String search = search_text.Text.Trim();
@@ -454,13 +535,170 @@ namespace housie
                     pdfDoc.Add(record);
                     pdfDoc.Close();
                     stream.Close();
-                    MessageBox.Show("Export completed.");
+                    MessageBox.Show("Report generation completed.","Message");
                 }
                 System.Diagnostics.Process.Start(saveFileDialog1.FileName);
             }
         }
 
+        /*Onclick event for expenditure */
+        private void submit_exp_Click(object sender, EventArgs e)
+        {
+            if (expenditure_purpose.Text.Trim() == "") {
+                MessageBox.Show("Please mention the purpose of the expenditure.", "Validation");
+            } else if (expenditure_date.Text.Trim()=="") {
+                MessageBox.Show("Please select date.", "Validation");
+            }
+            else if (exp_amt.Text.Trim() == "")
+            {
+                MessageBox.Show("Please select date.", "Validation");
+            }
+            else if (!isNum(exp_amt.Text.Trim()))
+            {
+                MessageBox.Show("Please enter valid amount.", "Validation");
+            }
+            else
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+                if (action_code.Text.Trim() == "new_entry")
+                {
+
+                    String id = generateRandomString(10);
+                    String qry = "insert into expenditure(Id,transaction_name,date_of_txn,amount) " +
+                        "values(@Id,@transaction_name,@date_of_txn,@amount)";
 
 
+                    SqlCommand cmd = new SqlCommand(qry, con);
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@transaction_name", expenditure_purpose.Text.Trim());
+                    cmd.Parameters.AddWithValue("@date_of_txn", Convert.ToDateTime(expenditure_date.Text.Trim()));
+                    cmd.Parameters.AddWithValue("@amount", exp_amt.Text.Trim());
+
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Transaction record saved successfully", "Result");
+                        refresh_ExpenditureGrid();
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBox.Show("Error in saving. " + exception.GetBaseException().ToString(), "Saving Error");
+                    }
+                }
+                else if (action_code.Text.Trim() == "update_entry") {
+                    String id = exp_id.Text.Trim();
+                    String qry = "update expenditure "+
+                        "set transaction_name = @transaction_name, "+
+                        "date_of_txn = @date_of_txn, "+
+                        "amount=@amount " +
+                        "where Id=@Id";
+
+
+                    SqlCommand cmd = new SqlCommand(qry, con);
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@transaction_name", expenditure_purpose.Text.Trim());
+                    cmd.Parameters.AddWithValue("@date_of_txn", Convert.ToDateTime(expenditure_date.Text.Trim()));
+                    cmd.Parameters.AddWithValue("@amount", exp_amt.Text.Trim());
+
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Transaction record updated successfully", "Result");
+                        refresh_ExpenditureGrid();
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBox.Show("Error in saving. " + exception.GetBaseException().ToString(), "Saving Error");
+                    }
+                }
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+        }
+        /* Reset expenditure */
+        private void reset_expenditure_Click(object sender, EventArgs e)
+        {
+            expenditure_purpose.Text = "";
+            exp_amt.Text = "";
+            exp_amt.Text = "";
+            action_code.Text = "new_entry";
+            exp_id.Text = "";
+            submit_exp.Text = "Submit";
+        }
+        public void refresh_ExpenditureGrid() {
+            if (con.State == ConnectionState.Closed)
+            {
+                con.Open();
+            }
+            String qry = "select * from expenditure order by date_of_txn desc";
+            DataTable dt = new DataTable();
+            adapter = new SqlDataAdapter(qry, con);
+            adapter.Fill(dt);
+            expenditre_dataGridView.DataSource = dt;
+            total_record_expenditure.Text = "No. of record(s): " + expenditre_dataGridView.RowCount.ToString();
+
+            /* Sum of expenditures */
+            decimal sum_exp = 0;
+            foreach (DataGridViewRow row in expenditre_dataGridView.Rows) {
+                sum_exp += Convert.ToDecimal(row.Cells[3].Value);
+            }
+            tot_exp.Text = sum_exp.ToString();
+            if (con.State == ConnectionState.Open)
+            {
+                con.Close();
+            }
+        }
+        private void expenditre_dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            String id;
+            if (rowIndex >= 0)
+            {
+                foreach (DataGridViewCell cell in expenditre_dataGridView.SelectedCells)
+                {
+                    if (cell.Value.ToString() == "Edit")
+                    {
+                        id = expenditre_dataGridView.Rows[rowIndex].Cells[0].Value.ToString();
+                        exp_id.Text = id;
+                        action_code.Text = "update_entry";
+
+                        /* Filling up data for edit */
+                        expenditure_purpose.Text = expenditre_dataGridView.Rows[rowIndex].Cells[1].Value.ToString();
+                        expenditure_date.Text = expenditre_dataGridView.Rows[rowIndex].Cells[2].Value.ToString();
+                        exp_amt.Text = expenditre_dataGridView.Rows[rowIndex].Cells[3].Value.ToString();
+                        submit_exp.Text = "Update";
+                    }
+                    else if (cell.Value.ToString() == "Delete") {
+                        id = expenditre_dataGridView.Rows[rowIndex].Cells[0].Value.ToString();
+                    }
+                    
+                }
+            }
+        }
+
+        /* Onclick event for donation */
+        private void submit_donor_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
+
+        private void donorGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Reset_donation_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }

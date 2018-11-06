@@ -51,11 +51,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="donationDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>donationDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="EditForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="EditForm.Designer.cs">
       <DependentUpon>EditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="expDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>expDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="expenditureDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>expenditureDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -88,6 +103,39 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="donationDataSet.xsc">
+      <DependentUpon>donationDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="donationDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>donationDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="donationDataSet.xss">
+      <DependentUpon>donationDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="expDataSet.xsc">
+      <DependentUpon>expDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="expDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>expDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="expDataSet.xss">
+      <DependentUpon>expDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="expenditureDataSet.xsc">
+      <DependentUpon>expenditureDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="expenditureDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>expenditureDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="expenditureDataSet.xss">
+      <DependentUpon>expenditureDataSet.xsd</DependentUpon>
+    </None>
     <None Include="housieDataSet.xsc">
       <DependentUpon>housieDataSet.xsd</DependentUpon>
     </None>
