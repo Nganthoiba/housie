@@ -74,6 +74,9 @@
             this.ticketGrid = new System.Windows.Forms.TableLayoutPanel();
             this.name_label = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            tot_exp = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            total_record_expenditure = new System.Windows.Forms.Label();
             this.expenditre_dataGridView = new System.Windows.Forms.DataGridView();
             this.idDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.transactionnameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -116,11 +119,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            tot_exp_amt = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
-            this.current_bal = new System.Windows.Forms.Label();
+            current_bal = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
-            this.tot_exp_amt = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -128,12 +131,11 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.tot_coll_amt = new System.Windows.Forms.Label();
+            tot_coll_amt = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.total_donation_amt = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.total_housie_amt = new System.Windows.Forms.TextBox();
+            total_housie_amt = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.ticketCollectionBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.ticketCollectionBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -146,9 +148,7 @@
             this.expenditureDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.expenditureTableAdapter1 = new housie.expDataSetTableAdapters.expenditureTableAdapter();
             this.donationTableAdapter = new housie.donationDataSetTableAdapters.donationTableAdapter();
-            this.total_record_expenditure = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.tot_exp = new System.Windows.Forms.Label();
+            total_donation_amt = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.Menutab.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -608,9 +608,9 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.tot_exp);
+            this.tabPage3.Controls.Add(tot_exp);
             this.tabPage3.Controls.Add(this.label23);
-            this.tabPage3.Controls.Add(this.total_record_expenditure);
+            this.tabPage3.Controls.Add(total_record_expenditure);
             this.tabPage3.Controls.Add(this.expenditre_dataGridView);
             this.tabPage3.Controls.Add(this.groupBox2);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
@@ -620,6 +620,33 @@
             this.tabPage3.TabIndex = 1;
             this.tabPage3.Text = "Expenditure";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tot_exp
+            // 
+            tot_exp.AutoSize = true;
+            tot_exp.Location = new System.Drawing.Point(839, 252);
+            tot_exp.Name = "tot_exp";
+            tot_exp.Size = new System.Drawing.Size(52, 13);
+            tot_exp.TabIndex = 4;
+            tot_exp.Text = "00000.00";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(714, 252);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(73, 13);
+            this.label23.TabIndex = 3;
+            this.label23.Text = "Total Amount:";
+            // 
+            // total_record_expenditure
+            // 
+            total_record_expenditure.AutoSize = true;
+            total_record_expenditure.Location = new System.Drawing.Point(399, 252);
+            total_record_expenditure.Name = "total_record_expenditure";
+            total_record_expenditure.Size = new System.Drawing.Size(81, 13);
+            total_record_expenditure.TabIndex = 2;
+            total_record_expenditure.Text = "No. of record: 0";
             // 
             // expenditre_dataGridView
             // 
@@ -979,11 +1006,12 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(total_donation_amt);
+            this.tabPage5.Controls.Add(tot_exp_amt);
             this.tabPage5.Controls.Add(this.label24);
-            this.tabPage5.Controls.Add(this.current_bal);
+            this.tabPage5.Controls.Add(current_bal);
             this.tabPage5.Controls.Add(this.label22);
             this.tabPage5.Controls.Add(this.label21);
-            this.tabPage5.Controls.Add(this.tot_exp_amt);
             this.tabPage5.Controls.Add(this.label20);
             this.tabPage5.Controls.Add(this.label19);
             this.tabPage5.Controls.Add(this.label18);
@@ -991,12 +1019,11 @@
             this.tabPage5.Controls.Add(this.label16);
             this.tabPage5.Controls.Add(this.label15);
             this.tabPage5.Controls.Add(this.label14);
-            this.tabPage5.Controls.Add(this.tot_coll_amt);
+            this.tabPage5.Controls.Add(tot_coll_amt);
             this.tabPage5.Controls.Add(this.label13);
             this.tabPage5.Controls.Add(this.label12);
-            this.tabPage5.Controls.Add(this.total_donation_amt);
             this.tabPage5.Controls.Add(this.label11);
-            this.tabPage5.Controls.Add(this.total_housie_amt);
+            this.tabPage5.Controls.Add(total_housie_amt);
             this.tabPage5.Controls.Add(this.label10);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
@@ -1004,6 +1031,15 @@
             this.tabPage5.TabIndex = 3;
             this.tabPage5.Text = "Accounting";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // tot_exp_amt
+            // 
+            tot_exp_amt.AutoSize = true;
+            tot_exp_amt.Location = new System.Drawing.Point(474, 200);
+            tot_exp_amt.Name = "tot_exp_amt";
+            tot_exp_amt.Size = new System.Drawing.Size(54, 13);
+            tot_exp_amt.TabIndex = 20;
+            tot_exp_amt.Text = "000000 /-";
             // 
             // label24
             // 
@@ -1016,12 +1052,12 @@
             // 
             // current_bal
             // 
-            this.current_bal.AutoSize = true;
-            this.current_bal.Location = new System.Drawing.Point(474, 243);
-            this.current_bal.Name = "current_bal";
-            this.current_bal.Size = new System.Drawing.Size(54, 13);
-            this.current_bal.TabIndex = 17;
-            this.current_bal.Text = "000000 /-";
+            current_bal.AutoSize = true;
+            current_bal.Location = new System.Drawing.Point(474, 243);
+            current_bal.Name = "current_bal";
+            current_bal.Size = new System.Drawing.Size(54, 13);
+            current_bal.TabIndex = 17;
+            current_bal.Text = "000000 /-";
             // 
             // label22
             // 
@@ -1041,13 +1077,6 @@
             this.label21.TabIndex = 15;
             this.label21.Text = "---------------------------------------------------------------------------------" +
     "----------------------------------------";
-            // 
-            // tot_exp_amt
-            // 
-            this.tot_exp_amt.Location = new System.Drawing.Point(430, 197);
-            this.tot_exp_amt.Name = "tot_exp_amt";
-            this.tot_exp_amt.Size = new System.Drawing.Size(98, 20);
-            this.tot_exp_amt.TabIndex = 14;
             // 
             // label20
             // 
@@ -1114,12 +1143,12 @@
             // 
             // tot_coll_amt
             // 
-            this.tot_coll_amt.AutoSize = true;
-            this.tot_coll_amt.Location = new System.Drawing.Point(474, 151);
-            this.tot_coll_amt.Name = "tot_coll_amt";
-            this.tot_coll_amt.Size = new System.Drawing.Size(54, 13);
-            this.tot_coll_amt.TabIndex = 6;
-            this.tot_coll_amt.Text = "000000 /-";
+            tot_coll_amt.AutoSize = true;
+            tot_coll_amt.Location = new System.Drawing.Point(474, 151);
+            tot_coll_amt.Name = "tot_coll_amt";
+            tot_coll_amt.Size = new System.Drawing.Size(54, 13);
+            tot_coll_amt.TabIndex = 6;
+            tot_coll_amt.Text = "000000 /-";
             // 
             // label13
             // 
@@ -1140,13 +1169,6 @@
             this.label12.Text = "---------------------------------------------------------------------------------" +
     "----------------------------------------";
             // 
-            // total_donation_amt
-            // 
-            this.total_donation_amt.Location = new System.Drawing.Point(430, 108);
-            this.total_donation_amt.Name = "total_donation_amt";
-            this.total_donation_amt.Size = new System.Drawing.Size(98, 20);
-            this.total_donation_amt.TabIndex = 3;
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -1158,10 +1180,13 @@
             // 
             // total_housie_amt
             // 
-            this.total_housie_amt.Location = new System.Drawing.Point(430, 63);
-            this.total_housie_amt.Name = "total_housie_amt";
-            this.total_housie_amt.Size = new System.Drawing.Size(98, 20);
-            this.total_housie_amt.TabIndex = 1;
+            total_housie_amt.AutoSize = true;
+            total_housie_amt.Location = new System.Drawing.Point(474, 66);
+            total_housie_amt.Name = "total_housie_amt";
+            total_housie_amt.Size = new System.Drawing.Size(54, 13);
+            total_housie_amt.TabIndex = 19;
+            total_housie_amt.Text = "000000 /-";
+            total_housie_amt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label10
             // 
@@ -1224,32 +1249,14 @@
             // 
             this.donationTableAdapter.ClearBeforeFill = true;
             // 
-            // total_record_expenditure
+            // total_donation_amt
             // 
-            this.total_record_expenditure.AutoSize = true;
-            this.total_record_expenditure.Location = new System.Drawing.Point(399, 252);
-            this.total_record_expenditure.Name = "total_record_expenditure";
-            this.total_record_expenditure.Size = new System.Drawing.Size(81, 13);
-            this.total_record_expenditure.TabIndex = 2;
-            this.total_record_expenditure.Text = "No. of record: 0";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(714, 252);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(73, 13);
-            this.label23.TabIndex = 3;
-            this.label23.Text = "Total Amount:";
-            // 
-            // tot_exp
-            // 
-            this.tot_exp.AutoSize = true;
-            this.tot_exp.Location = new System.Drawing.Point(839, 252);
-            this.tot_exp.Name = "tot_exp";
-            this.tot_exp.Size = new System.Drawing.Size(52, 13);
-            this.tot_exp.TabIndex = 4;
-            this.tot_exp.Text = "00000.00";
+            total_donation_amt.AutoSize = true;
+            total_donation_amt.Location = new System.Drawing.Point(474, 111);
+            total_donation_amt.Name = "total_donation_amt";
+            total_donation_amt.Size = new System.Drawing.Size(54, 13);
+            total_donation_amt.TabIndex = 21;
+            total_donation_amt.Text = "000000 /-";
             // 
             // Form1
             // 
@@ -1368,10 +1375,9 @@
         private System.Windows.Forms.Label total_donated_amt;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label current_bal;
+        
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.TextBox tot_exp_amt;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label18;
@@ -1379,12 +1385,11 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label tot_coll_amt;
+        
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox total_donation_amt;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox total_housie_amt;
+        
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button reset_expenditure;
         private System.Windows.Forms.TextBox action_code;
@@ -1411,6 +1416,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn doneraddressDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn amountDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn donationdateDataGridViewTextBoxColumn;
+        
+        private System.Windows.Forms.Label label23;
+       
+        public static System.Windows.Forms.Label tot_exp;
+        public static System.Windows.Forms.Label total_record_expenditure;
         public static System.Windows.Forms.TextBox search_text;
         public static System.Windows.Forms.RadioButton unpaid;
         public static System.Windows.Forms.RadioButton paid;
@@ -1418,9 +1428,11 @@
         public static System.Windows.Forms.Label no_of_record;
         public static System.Windows.Forms.DataGridView housieDataGridView;
         public static System.Windows.Forms.Button btnExportPdf;
-        private System.Windows.Forms.Label tot_exp;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label total_record_expenditure;
+        public static System.Windows.Forms.Label tot_exp_amt;
+        public static System.Windows.Forms.Label total_housie_amt;
+        public static System.Windows.Forms.Label tot_coll_amt;
+        public static System.Windows.Forms.Label current_bal;
+        public static System.Windows.Forms.Label total_donation_amt;
     }
 }
 
